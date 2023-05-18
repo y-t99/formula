@@ -1,0 +1,22 @@
+Formula {
+  Expression
+    = AddStatement
+
+  AddStatement
+    = AddStatement "+" MultiStatement  -- plus
+    | AddStatement "-" MultiStatement  -- minus
+    | MultiStatement
+
+  MultiStatement
+    = MultiStatement "*" PriorityStatement  -- times
+    | MultiStatement "/" PriorityStatement  -- divide
+    | PriorityStatement
+
+  PriorityStatement
+    = "(" Expression ")"  -- paren
+    | number
+
+  number  (a number)
+    = digit+ "." digit+  -- fract
+    | digit+             -- whole
+}

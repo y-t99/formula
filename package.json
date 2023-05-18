@@ -2,13 +2,13 @@
   "name": "@itou/formula",
   "version": "0.1.0",
   "description": "The simple formula executor based on ohm.",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/y-t99/formula.git",
   "author": "itou <13060889537@sina.cn>",
   "license": "MIT",
   "scripts": {
     "generate": "ohm generateBundles --withTypes 'src/*.ohm'",
-    "build": "tsc && tsc-alias",
+    "build": "rimraf dist && tsc && tsc-alias && copy src/**/*.js dist",
     "test": "jest"
   },
   "devDependencies": {
@@ -16,6 +16,7 @@
     "@types/jest": "^29.5.1",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.59.6",
+    "copy": "^0.3.2",
     "eslint": "^8.0.1",
     "eslint-config-standard-with-typescript": "^34.0.1",
     "eslint-plugin-import": "^2.25.2",
