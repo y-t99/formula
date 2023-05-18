@@ -3,3 +3,7 @@ node_modules/
 
 # Ignore build output
 dist/
+
+coverage/
+
+yarn-error.log
