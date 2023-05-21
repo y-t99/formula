@@ -13,14 +13,21 @@ import {
 
 export interface FormulaActionDict<T> extends BaseActionDict<T> {
   Expression?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  AddStatement_plus?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode) => T;
-  AddStatement_minus?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode) => T;
-  AddStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  MultiStatement_times?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode) => T;
-  MultiStatement_divide?: (this: NonterminalNode, arg0: NonterminalNode, arg1: TerminalNode, arg2: NonterminalNode) => T;
-  MultiStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
-  PriorityStatement_paren?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  Statement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  Operator_binary?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  Operator_unary?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  Operator?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  BinaryOperator?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode) => T;
+  UnaryOperator?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  PriorityStatement_expression?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
   PriorityStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  BinaryOperatorToken?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  LowerPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  LowPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  HighPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  HigherPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  HighestPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  UnaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
   number_fract?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: IterationNode) => T;
   number_whole?: (this: NonterminalNode, arg0: IterationNode) => T;
   number?: (this: NonterminalNode, arg0: NonterminalNode) => T;

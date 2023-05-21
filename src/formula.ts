@@ -3,43 +3,123 @@ import grammar, { FormulaSemantics } from "./formula.ohm-bundle";
 
 const semantics: FormulaSemantics = grammar.createSemantics();
 
+enum OperatorToken {
+  Or = "||",
+  And = "&&",
+  Equal = "=",
+  NotEqual = "!=",
+  Less = "<",
+  LessEqual = "<=",
+  Greater = ">",
+  GreaterEqual = ">=",
+  Plus = "+",
+  Minus = "-",
+  Div = "/",
+  Times = "*",
+  Mod = "%",
+  Not = "!",
+}
+
 semantics.addOperation("run", {
   Expression: (expression: NonterminalNode) => {
     return expression.run();
   },
-  AddStatement_plus: (left: NonterminalNode, _: TerminalNode, right: NonterminalNode) => {
-    return left.run() + right.run();
-  },
-  AddStatement_minus: (left: NonterminalNode, _: TerminalNode, right: NonterminalNode) => {
-    return left.run() - right.run();
-  },
-  AddStatement: (statement: NonterminalNode) => {
+  Statement: (statement: NonterminalNode) => {
     return statement.run();
   },
-  MultiStatement_times: (left: NonterminalNode, _: TerminalNode, right: NonterminalNode) => {
-    return left.run() * right.run();
+  Operator_binary: (operation: NonterminalNode) => {
+    return operation.run();
   },
-  MultiStatement_divide: (left: NonterminalNode, _: TerminalNode, right: NonterminalNode) => {
-    return left.run() / right.run();
+  Operator_unary: (operation: NonterminalNode) => {
+    return operation.run();
   },
-  MultiStatement: (statement: NonterminalNode) => {
-    return statement.run();
+  Operator: (operation: NonterminalNode) => {
+    return operation.run();
   },
-  PriorityStatement_paren: (_left: TerminalNode, statement: NonterminalNode, _right: TerminalNode) => {
-    return statement.run();
+  BinaryOperator: (
+    left: NonterminalNode,
+    operator: NonterminalNode,
+    right: NonterminalNode
+  ) => {
+    if (operator.sourceString == OperatorToken.Or) {
+      return left.run() == 1 || right.run() == 1 ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.And) {
+      return left.run() == 1 && right.run() == 1 ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.Equal) {
+      return left.run() == right.run() ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.NotEqual) {
+      return left.run() != right.run() ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.Less) {
+      return left.run() < right.run() ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.LessEqual) {
+      return left.run() <= right.run() ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.Greater) {
+      return left.run() > right.run() ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.GreaterEqual) {
+      return left.run() >= right.run() ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.Plus) {
+      return left.run() + right.run();
+    } else if (operator.sourceString == OperatorToken.Minus) {
+      return left.run() - right.run();
+    } else if (operator.sourceString == OperatorToken.Div) {
+      return left.run() / right.run();
+    } else if (operator.sourceString == OperatorToken.Times) {
+      return left.run() * right.run();
+    } else if (operator.sourceString == OperatorToken.Mod) {
+      return left.run() % right.run();
+    } 
+    throw new Error("unkonwn operator");
+  },
+  UnaryOperator: (operator: NonterminalNode, factor: NonterminalNode) => {
+    if (operator.sourceString == OperatorToken.Not) {
+      return !factor.run() ? 1 : 0;
+    } else if (operator.sourceString == OperatorToken.Plus) {
+      return +factor.run();
+    } else if (operator.sourceString == OperatorToken.Minus) {
+      return -factor.run();
+    } 
+    throw new Error("unkonwn operator");
+  },
+  PriorityStatement_expression: (
+    _left: TerminalNode,
+    expression: NonterminalNode,
+    _right: TerminalNode
+  ) => {
+    return expression.run();
   },
   PriorityStatement: (statement: NonterminalNode) => {
     return statement.run();
   },
+  BinaryOperatorToken: (operator: NonterminalNode) => {
+    return operator.sourceString;
+  },
+  LowerPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
+    return operator.sourceString;
+  },
+  LowPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
+    return operator.sourceString;
+  },
+  HighPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
+    return operator.sourceString;
+  },
+  HigherPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
+    return operator.sourceString;
+  },
+  HighestPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
+    return operator.sourceString;
+  },
+  UnaryOperatorToken: (operator: TerminalNode) => {
+    return operator.sourceString;
+  },
   number_fract: (i: IterationNode, _: TerminalNode, d: IterationNode) => {
-    return parseFloat(`${i.sourceString}.${d.sourceString}`)
+    return parseFloat(`${i.sourceString}.${d.sourceString}`);
   },
   number_whole: (i: IterationNode) => {
     return parseInt(i.sourceString);
   },
   number: (statement: NonterminalNode) => {
     return statement.run();
-  }
+  },
 });
 
 export const evaluate = (input: string) => {

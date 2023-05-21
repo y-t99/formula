@@ -1,21 +1,58 @@
 Formula {
   Expression
-    = AddStatement
+    = Statement
 
-  AddStatement
-    = AddStatement "+" MultiStatement  -- plus
-    | AddStatement "-" MultiStatement  -- minus
-    | MultiStatement
-
-  MultiStatement
-    = MultiStatement "*" PriorityStatement  -- times
-    | MultiStatement "/" PriorityStatement  -- divide
+  Statement
+    = Operator
     | PriorityStatement
-
+    
+  Operator
+    = BinaryOperator -- binary
+    | UnaryOperator -- unary
+ 
+  BinaryOperator
+    = BinaryOperator BinaryOperatorToken PriorityStatement
+   | PriorityStatement BinaryOperatorToken BinaryOperator
+   | BinaryOperator BinaryOperatorToken UnaryOperator
+   | UnaryOperator BinaryOperatorToken BinaryOperator
+   | UnaryOperator BinaryOperatorToken UnaryOperator
+   | PriorityStatement BinaryOperatorToken UnaryOperator
+   | UnaryOperator BinaryOperatorToken PriorityStatement
+   | PriorityStatement BinaryOperatorToken PriorityStatement
+  
+  UnaryOperator
+    = UnaryOperatorToken PriorityStatement
+    | UnaryOperatorToken UnaryOperator  
+    
   PriorityStatement
-    = "(" Expression ")"  -- paren
+    = "(" Expression ")"  --expression
     | number
 
+  BinaryOperatorToken
+    = LowerPrecedenceBinaryOperatorToken
+    | LowPrecedenceBinaryOperatorToken
+    | HighPrecedenceBinaryOperatorToken
+    | HigherPrecedenceBinaryOperatorToken
+    | HighestPrecedenceBinaryOperatorToken
+  
+  LowerPrecedenceBinaryOperatorToken
+    = "||" | "&&"
+  
+  LowPrecedenceBinaryOperatorToken
+    = "=" |  "!="
+  
+  HighPrecedenceBinaryOperatorToken
+  	= "<=" | ">=" | "<" | ">"
+  
+  HigherPrecedenceBinaryOperatorToken
+    = "+" | "-"
+  
+  HighestPrecedenceBinaryOperatorToken
+    = "*" | "/" | "%"
+  
+  UnaryOperatorToken
+    = "!" | "+" | "-"
+    
   number  (a number)
     = digit+ "." digit+  -- fract
     | digit+             -- whole
