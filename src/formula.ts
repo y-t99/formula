@@ -91,25 +91,25 @@ semantics.addOperation("run", {
     return statement.run();
   },
   BinaryOperatorToken: (operator: NonterminalNode) => {
-    return operator.sourceString;
+    return operator.run();
   },
   LowerPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.sourceString;
+    return operator.run();
   },
   LowPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.sourceString;
+    return operator.run();
   },
   HighPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.sourceString;
+    return operator.run();
   },
   HigherPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.sourceString;
+    return operator.run();
   },
   HighestPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.sourceString;
+    return operator.run();
   },
   UnaryOperatorToken: (operator: TerminalNode) => {
-    return operator.sourceString;
+    return operator.run();
   },
   number_fract: (i: IterationNode, _: TerminalNode, d: IterationNode) => {
     return parseFloat(`${i.sourceString}.${d.sourceString}`);
