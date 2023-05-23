@@ -24,10 +24,6 @@ Formula {
     = UnaryOperatorToken PriorityStatement
     | UnaryOperatorToken UnaryOperator  
     
-  PriorityStatement
-    = "(" Expression ")"  --expression
-    | number
-
   BinaryOperatorToken
     = LowerPrecedenceBinaryOperatorToken
     | LowPrecedenceBinaryOperatorToken
@@ -52,7 +48,44 @@ Formula {
   
   UnaryOperatorToken
     = "!" | "+" | "-"
+  
+  identifier (an identifier) 
+    = ~reservedWord identifierName
+  
+  identifierName 
+    = "Contains" | "Find" | "Join" | "Left"
+    | "Length" | "Lowercase" | "Replace" | "Right"
+    | "Substring" | "Uppercase"
+  
+  reservedWord 
+    = nullLiteral | booleanLiteral
+  
+  PriorityStatement
+    = CallStatement
+    | "(" Expression ")"  --expression
+    | valueLiteral
+
+  CallStatement
+    = identifier args
+  
+  args = "(" listOf<(valueLiteral), ","> ")"
+  
+  valueLiteral
+   	= number
+    | string
+    | nullLiteral
+    | booleanLiteral
+    | "[" listOf<(valueLiteral), ","> "]" -- array
+
+  nullLiteral 
+  	= "null"
+  
+  booleanLiteral 
+  	= "true" | "false"
     
+  string 
+  	= "\"" (~"\"" any)* "\""
+
   number  (a number)
     = digit+ "." digit+  -- fract
     | digit+             -- whole

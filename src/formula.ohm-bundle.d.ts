@@ -19,8 +19,6 @@ export interface FormulaActionDict<T> extends BaseActionDict<T> {
   Operator?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   BinaryOperator?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode, arg2: NonterminalNode) => T;
   UnaryOperator?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
-  PriorityStatement_expression?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
-  PriorityStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   BinaryOperatorToken?: (this: NonterminalNode, arg0: NonterminalNode) => T;
   LowerPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
   LowPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
@@ -28,6 +26,18 @@ export interface FormulaActionDict<T> extends BaseActionDict<T> {
   HigherPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
   HighestPrecedenceBinaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
   UnaryOperatorToken?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  identifier?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  identifierName?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  reservedWord?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  PriorityStatement_expression?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  PriorityStatement?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  CallStatement?: (this: NonterminalNode, arg0: NonterminalNode, arg1: NonterminalNode) => T;
+  args?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  valueLiteral_array?: (this: NonterminalNode, arg0: TerminalNode, arg1: NonterminalNode, arg2: TerminalNode) => T;
+  valueLiteral?: (this: NonterminalNode, arg0: NonterminalNode) => T;
+  nullLiteral?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  booleanLiteral?: (this: NonterminalNode, arg0: TerminalNode) => T;
+  string?: (this: NonterminalNode, arg0: TerminalNode, arg1: IterationNode, arg2: TerminalNode) => T;
   number_fract?: (this: NonterminalNode, arg0: IterationNode, arg1: TerminalNode, arg2: IterationNode) => T;
   number_whole?: (this: NonterminalNode, arg0: IterationNode) => T;
   number?: (this: NonterminalNode, arg0: NonterminalNode) => T;

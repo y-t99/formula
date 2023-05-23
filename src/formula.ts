@@ -1,4 +1,4 @@
-import { IterationNode, NonterminalNode, TerminalNode } from "ohm-js";
+import { IterationNode, Node, NonterminalNode, TerminalNode } from "ohm-js";
 import grammar, { FormulaSemantics } from "./formula.ohm-bundle";
 
 const semantics: FormulaSemantics = grammar.createSemantics();
@@ -21,21 +21,6 @@ enum OperatorToken {
 }
 
 semantics.addOperation("run", {
-  Expression: (expression: NonterminalNode) => {
-    return expression.run();
-  },
-  Statement: (statement: NonterminalNode) => {
-    return statement.run();
-  },
-  Operator_binary: (operation: NonterminalNode) => {
-    return operation.run();
-  },
-  Operator_unary: (operation: NonterminalNode) => {
-    return operation.run();
-  },
-  Operator: (operation: NonterminalNode) => {
-    return operation.run();
-  },
   BinaryOperator: (
     left: NonterminalNode,
     operator: NonterminalNode,
@@ -67,7 +52,7 @@ semantics.addOperation("run", {
       return left.run() * right.run();
     } else if (operator.sourceString == OperatorToken.Mod) {
       return left.run() % right.run();
-    } 
+    }
     throw new Error("unkonwn operator");
   },
   UnaryOperator: (operator: NonterminalNode, factor: NonterminalNode) => {
@@ -77,7 +62,7 @@ semantics.addOperation("run", {
       return +factor.run();
     } else if (operator.sourceString == OperatorToken.Minus) {
       return -factor.run();
-    } 
+    }
     throw new Error("unkonwn operator");
   },
   PriorityStatement_expression: (
@@ -87,29 +72,42 @@ semantics.addOperation("run", {
   ) => {
     return expression.run();
   },
-  PriorityStatement: (statement: NonterminalNode) => {
-    return statement.run();
+  CallStatement: (functionName: NonterminalNode, args: NonterminalNode) => {
+    const nodes: Node[] = args.run();
+    switch (functionName.sourceString) {
+      case "Contains":
+        return nodes[0]?.run()?.includes(nodes[1]?.run());
+      case "Find":
+        return nodes[0]?.run()?.indexOf(nodes[1]?.run()) + 1;
+      case "Join":
+        return nodes[0]?.run().join(nodes[1]?.run());
+      case "Left":
+        return nodes[0]?.run()?.substring(0, nodes[1]?.run());
+      case "Length":
+        return nodes[0]?.run()?.length;
+      case "Lowercase":
+        return nodes[0]?.run()?.toLowerCase();
+      case "Replace":
+        return nodes[0]?.run()?.replace(nodes[1]?.run(), nodes[2]?.run());
+      case "Right":
+        return nodes[0]?.run()?.substring(nodes[0]?.run().length - nodes[1]?.run());
+      case "Substring":
+        return nodes[0]?.run()?.substring(nodes[1]?.run() - 1, nodes[1]?.run() + nodes[2]?.run() - 1);
+      case "Uppercase":
+        return nodes[0]?.run()?.toUpperCase();
+      default:
+        throw new Error("unkonwn function");
+    }
   },
-  BinaryOperatorToken: (operator: NonterminalNode) => {
-    return operator.run();
+  args: (_left: TerminalNode, args: NonterminalNode, _right: TerminalNode) => {
+    return args.asIteration().children;
   },
-  LowerPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.run();
-  },
-  LowPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.run();
-  },
-  HighPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.run();
-  },
-  HigherPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.run();
-  },
-  HighestPrecedenceBinaryOperatorToken: (operator: TerminalNode) => {
-    return operator.run();
-  },
-  UnaryOperatorToken: (operator: TerminalNode) => {
-    return operator.run();
+  valueLiteral_array: (
+    _left: TerminalNode,
+    array: NonterminalNode,
+    _right: TerminalNode
+  ) => {
+    return array.asIteration().children.map((c) => c.run());
   },
   number_fract: (i: IterationNode, _: TerminalNode, d: IterationNode) => {
     return parseFloat(`${i.sourceString}.${d.sourceString}`);
@@ -117,8 +115,14 @@ semantics.addOperation("run", {
   number_whole: (i: IterationNode) => {
     return parseInt(i.sourceString);
   },
-  number: (statement: NonterminalNode) => {
-    return statement.run();
+  nullLiteral: (value: TerminalNode) => {
+    return null;
+  },
+  booleanLiteral: (value: TerminalNode) => {
+    return Boolean(value.sourceString);
+  },
+  string: (_left: TerminalNode, value: IterationNode, _right: TerminalNode) => {
+    return value.sourceString;
   },
 });
 

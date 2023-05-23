@@ -105,22 +105,39 @@ expect(output).toEqual(1);
 
 The following table lists operators in order from highest precedence (7) to lowest precedence (1).
 
-| Operator Name              | Precedence | Operator |
-| -------------------------- | ---------- | -------- | 
-| Grouping                   |     7      | `(...)`  |
-| Logical NOT (!)            |     6      |  `!...`  |
-| Unary plus (+)             |     6      |  `+...`  |
-| Unary negation (-)         |     6      |  `-...`  |
-| Multiplication (\*)        |     5      | `..*..`  |
-| Division (/)               |     5      | `../..`  |
-| Remainder (%)              |     5      | `..%..`  |
-| Addition (+)               |     4      | `..+..`  |
-| Subtraction (-)            |     4      | `..-..`  |
-| Less Than (<)              |     3      | `..<..`  |
-| Less Than Or Equal (<=)    |     3      | `..<=..` |
-| Greater Than (>)           |     3      | `..>..`  |
-| Greater Than Or Equal (>=) |     3      | `..>=..` |
-| Equality (=)               |     2      | `..=..`  |
-| Inequality (!=)            |     2      | `..!=..` |
-| Logical AND (&&)           |     1      | `..&&..` |
-| Logical OR (\|\|)          |     1      | `..\|\|..` | 
+| Operator Name              | Precedence | Operator   |
+| -------------------------- | ---------- | ---------- |
+| Grouping                   | 7          | `(...)`    |
+| Logical NOT (!)            | 6          | `!...`     |
+| Unary plus (+)             | 6          | `+...`     |
+| Unary negation (-)         | 6          | `-...`     |
+| Multiplication (\*)        | 5          | `..*..`    |
+| Division (/)               | 5          | `../..`    |
+| Remainder (%)              | 5          | `..%..`    |
+| Addition (+)               | 4          | `..+..`    |
+| Subtraction (-)            | 4          | `..-..`    |
+| Less Than (<)              | 3          | `..<..`    |
+| Less Than Or Equal (<=)    | 3          | `..<=..`   |
+| Greater Than (>)           | 3          | `..>..`    |
+| Greater Than Or Equal (>=) | 3          | `..>=..`   |
+| Equality (=)               | 2          | `..=..`    |
+| Inequality (!=)            | 2          | `..!=..`   |
+| Logical AND (&&)           | 1          | `..&&..`   |
+| Logical OR (\|\|)          | 1          | `..\|\|..` |
+
+## Functions
+
+### String
+
+| Function                       | Return Type | Description                                                                                                                                                            | Example                                              |
+| ------------------------------ | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Contains(string,substring)     | boolean     | Returns whether string contains substring as a substring.                                                                                                              | If `Contains("itou ng","ng")`, the result is `true`. |
+| Find(string,substring)         | number      | Returns the position of the start of the first occurrence of substring in string.If the substring is not found return an invalid index value – 0. Position start 1.    | If `Find("itou ng","ng")`, the result is 6.          |
+| Join(strings,separator)        | string      | Joins the list of strings into a new string, with the separator string between each of the substrings.                                                                 | If `Join(["A","B"],",")`, the result is "A,B"      |
+| Left(string,number)            | string      | Return characters from the beginning of a string                                                                                                                       | If `Left("ABCD",2)`, the result is “AB”.             |
+| Length(string)                 | number      | Returns the length of a string (not counting the null terminator or any other of the string's internal structural information). An empty string returns a length of 0. | If `Length("itou ng")`, the result is 7.             |
+| Lowercase(string)              | string      | Returns the string in lower case.                                                                                                                                      | If `Lowercase("ABc")`, the result is "abc".          |
+| Replace(string,find,replace) | string      | Returns a string with find occurrences changed to replace.                                                                                                             | If `Replace("ABc","c","C")`, the result is "ABC"     |
+| Right(string,number)           | string      | Return characters from the end of a string                                                                                                                             | If `Right("ABCD",2)`, the result is “CD”.            |
+| Substring(string,position,length) | string | Returns a substring of string starting at position of length numChars. Position start 1. | If `Substring("abc",1,2)`, the result is "ab" |
+| Uppercase(string) | string | Returns the string in upper case. | If `Uppercase("ABc")`, the result is "ABC". |
